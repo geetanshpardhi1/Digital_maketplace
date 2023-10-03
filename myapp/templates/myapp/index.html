@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block body %}
+    <h1>digital marketplace</h1>
+    <div class="product-container flex">
+        {% for product in products %}
+        <div class="product shadow-lg w-1/4 rounded-lg m-10">
+
+            <div class="productimage">
+                <img src="https://img.freepik.com/premium-vector/photo-icon-picture-icon-image-sign-symbol-vector-illustration_64749-4409.jpg" alt="">
+            </div>
+            <div class="p-5">
+                <div class="font-bold">
+                    {{product.name}}
+                </div>
+                <div>
+                    {{product.description}}
+                </div>
+                <div class="text-green-700 font-bold">
+                    $ {{product.price}}
+                </div>
+                <div class="mt-5">
+                    <a href="{% url 'detail' product.id %}" class="bg-green-500 text-white px-4 py-2">View Details</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    {% endblock %}
+    
+</body>
+</html>

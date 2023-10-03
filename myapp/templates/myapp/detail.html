@@ -1,0 +1,28 @@
+{% extends 'myapp/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block body %}
+    <div class="flex p-10">
+        <div>
+            <img src="https://img.freepik.com/premium-vector/photo-icon-picture-icon-image-sign-symbol-vector-illustration_64749-4409.jpg" alt="">
+        </div>
+        <div class="pl-10">
+            <div class="text-4xl mb-4">{{product.name}}</div>
+            <div class="mb-4">{{product.description}}</div>
+            <div class="mb-4 text-green-700 text-bold"> $ {{product.price}}</div>
+            <div>
+                <button id="buy-button" class="bg-green-500 text-white px-4 py-2 rounded-sm">
+                    Buy
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>
