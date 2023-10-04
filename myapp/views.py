@@ -1,9 +1,10 @@
-from django.shortcuts import render
-from .models import Product
+from django.shortcuts import render,get_object_or_404
+from .models import Product,orderDetail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import stripe,json
 from django.urls import reverse
+from django.http import JsonResponse,HttpResponseNotFound
 
 # Create your views here.
 def index(request):
@@ -37,7 +38,30 @@ def create_checkout_session(request,id):
             }
         ],
         mode = 'payment',
-        success_url = request.build_absolute_uri(reverse('success'))+
+        success_url = request.build_absolute_uri(reverse('payment_success'))+
         "?session_id={CHECKOUT_SESSION_ID}",
         cancel_url = request.build_absolute_uri(reverse('failed')),
     )
+    
+    order = orderDetail
+    order.customer_email = request_data['email']
+    order.product = product
+    order.stripe_payment_intent = checkout_session['payment_intent']
+    order.amount = int(product.price)
+    order.save()
+    
+    return JsonResponse({'sessionId':checkout_session.id})
+
+
+
+def payment_view_success(request):
+    session_id = request.GET.get('session_id')
+    if session_id is None:
+        return HttpResponseNotFound()
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    session = stripe.checkout.Session.retrieve(session_id)
+    order = get_object_or_404(orderDetail,stripe_payment_intent= session.payment_intent)
+    order.has_paid = True
+    order.save()
+    
+    return render(request,'myapp/payment_success.html',{'order':order})
