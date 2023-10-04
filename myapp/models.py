@@ -10,4 +10,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
-     
+class orderDetail(models.Model):
+    customer_email = models.EmailField(max_length=254)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    stripe_payment_intent = models.CharField( max_length=200)
+    has_paid = models.BooleanField(default=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+    update_on = models.DateTimeField(auto_now_add=True)
+    
+ 

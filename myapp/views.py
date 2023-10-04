@@ -3,6 +3,7 @@ from .models import Product
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import stripe,json
+from django.urls import reverse
 
 # Create your views here.
 def index(request):
@@ -34,7 +35,7 @@ def create_checkout_session(request,id):
                 },
                 'quantity':1,
             }
-        ]
+        ],
         mode = 'payment',
         success_url = request.build_absolute_uri(reverse('success'))+
         "?session_id={CHECKOUT_SESSION_ID}",
