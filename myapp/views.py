@@ -14,12 +14,12 @@ def index(request):
 
 def detail(request,id):
     product = Product.objects.get(id=id)
-    stripe_publishabe_key = settings.STRIPE_PUBLISHABLE_KEY
-    return render(request,'myapp/detail.html',{'product':product,'stripe_publishabe_key':stripe_publishabe_key})
+    stripe_publishabel_key = settings.STRIPE_PUBLISHABLE_KEY
+    return render(request,'myapp/detail.html',{'product':product,'stripe_publishabel_key':stripe_publishabel_key})
 
 @csrf_exempt
 def create_checkout_session(request,id):
-    request_data = json.load(request.body)
+    request_data = json.loads(request.body)
     product = Product.objects.get(id=id)
     stripe.api_key = settings.STRIPE_SECRET_KEY
     checkout_session = stripe.checkout.Session.create(
