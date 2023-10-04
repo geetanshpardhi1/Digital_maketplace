@@ -7,7 +7,8 @@ from django.conf import settings
 urlpatterns = [
     path('',views.index,name='index'),
     path('detail/<int:id>/',views.detail,name='detail'),
-    path('success/',views.payment_view_success,name='payment_success')
+    path('success/',views.payment_view_success,name='payment_success'),
+    path('failed/',views.payment_failed_view,name='payment_failed'),
     
 ]
 

@@ -40,7 +40,7 @@ def create_checkout_session(request,id):
         mode = 'payment',
         success_url = request.build_absolute_uri(reverse('payment_success'))+
         "?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url = request.build_absolute_uri(reverse('failed')),
+        cancel_url = request.build_absolute_uri(reverse('payment_failed')),
     )
     
     order = orderDetail
@@ -65,3 +65,6 @@ def payment_view_success(request):
     order.save()
     
     return render(request,'myapp/payment_success.html',{'order':order})
+
+def payment_failed_view(request):
+    return render(request,'myapp/payment_failed.html')
