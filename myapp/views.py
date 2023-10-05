@@ -14,8 +14,8 @@ def index(request):
 
 def detail(request,id):
     product = Product.objects.get(id=id)
-    stripe_publishabel_key = settings.STRIPE_PUBLISHABLE_KEY
-    return render(request,'myapp/detail.html',{'product':product,'stripe_publishabel_key':stripe_publishabel_key})
+    stripe_publishable_key = settings.STRIPE_PUBLISHABLE_KEY
+    return render(request,'myapp/detail.html',{'product':product,'stripe_publishable_key':stripe_publishable_key})
 
 @csrf_exempt
 def create_checkout_session(request,id):
@@ -23,7 +23,7 @@ def create_checkout_session(request,id):
     product = Product.objects.get(id=id)
     stripe.api_key = settings.STRIPE_SECRET_KEY
     checkout_session = stripe.checkout.Session.create(
-        custome_email = request_data['email'],
+        customer_email = request_data['email'],
         payment_method_types = ['card'],
         line_items = [
             {
@@ -38,12 +38,12 @@ def create_checkout_session(request,id):
             }
         ],
         mode = 'payment',
-        success_url = request.build_absolute_uri(reverse('payment_success'))+
+        success_url = request.build_absolute_uri(reverse('success'))+
         "?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url = request.build_absolute_uri(reverse('payment_failed')),
+        cancel_url = request.build_absolute_uri(reverse('failed')),
     )
     
-    order = orderDetail
+    order = orderDetail()
     order.customer_email = request_data['email']
     order.product = product
     order.stripe_payment_intent = checkout_session['payment_intent']
@@ -54,7 +54,7 @@ def create_checkout_session(request,id):
 
 
 
-def payment_view_success(request):
+def payment_success_view(request):
     session_id = request.GET.get('session_id')
     if session_id is None:
         return HttpResponseNotFound()

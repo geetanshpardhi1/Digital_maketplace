@@ -11,12 +11,12 @@ class Product(models.Model):
         return self.name
     
 class orderDetail(models.Model):
-    customer_email = models.EmailField(max_length=254)
+    customer_email = models.EmailField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    stripe_payment_intent = models.CharField( max_length=200)
+    stripe_payment_intent = models.CharField(max_length=200,null=True)
     has_paid = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
-    update_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now_add=True)
     
  
