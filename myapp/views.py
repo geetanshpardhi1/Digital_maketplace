@@ -3,7 +3,7 @@ from .models import Product,orderDetail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import stripe,json
-from .forms import ProductForm
+from .forms import ProductForm,UserRegistration
 from django.urls import reverse
 from django.http import JsonResponse,HttpResponseNotFound
 
@@ -114,3 +114,15 @@ def product_delete(request,id):
 def dashboard(request):
     products = Product.objects.all()
     return render(request,'myapp/dashboard.html',{'products':products})
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistration(request.POST)
+        new_user = user_form.save(commit=False)
+        new_user.set_password(user_form.cleaned_data['password'])
+        new_user.save()
+        return redirect('index')    
+    
+    user_form = UserRegistration()
+    return render(request,'myapp/register.html',{'user_form':user_form})
