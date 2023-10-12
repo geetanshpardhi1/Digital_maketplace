@@ -63,7 +63,7 @@ def payment_success_view(request):
 
     return render(request, 'myapp/payment_success.html', {'order': order})
 
-#major payment success view
+# major payment success view
 # def payment_success_view(request):
 #     session_id = request.GET.get('session_id')
 #     if session_id is None:
@@ -72,6 +72,10 @@ def payment_success_view(request):
 #     session = stripe.checkout.Session.retrieve(session_id)
 #     order = get_object_or_404(orderDetail,stripe_payment_intent= session.payment_intent)
 #     order.has_paid = True
+#     product= Product.objects.get(id=order.product.id)
+#     product.total_sales_amount += int(product.price)  
+#     product.total_sales += 1
+#     product.save()
 #     order.save()
     
 #     return render(request,'myapp/payment_success.html',{'order':order})
